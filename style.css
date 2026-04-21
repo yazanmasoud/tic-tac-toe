@@ -1,0 +1,36 @@
+table {
+    border-collapse: collapse;
+}
+
+
+body {
+    background-color: #383838;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/* Zellen */
+td {
+    width: 100px;
+    height: 100px;
+    border: 3px solid white;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0; /* wichtig, damit SVG sauber sitzt */
+    cursor: pointer;
+}
+
+/* Öffnung nach außen (keine Außenlinien) */
+tr:first-child td {
+    border-top: none;
+}
+tr:last-child td {
+    border-bottom: none;
+}
+td:first-child {
+    border-left: none;
+}
+td:last-child {
+    border-right: none;
+}
