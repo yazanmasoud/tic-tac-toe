@@ -1,14 +1,10 @@
-let fields = [
-    null,
-    "circle",
-    "cross",
-    "circle",
-    null,
-    null,
-    null,
-    null,
-    null,
-]
+let field = [
+    null, null, null,
+    null, null, null,
+    null, null, null
+];
+
+let currentPlayer = 'circle'; // startet mit O
 
 function init() {
     render();
@@ -42,9 +38,11 @@ function render() {
 
         for (let j = 0; j < 3; j++) {
             let index = i * 3 + j;
-            let value = fields[index];
+            let value = field[index];
 
-            html += `<td>${generateSymbol(value)}</td>`;
+            html += `<td onclick="handleClick(${index})">
+                        ${generateSymbol(value)}
+                     </td>`;
         }
 
         html += '</tr>';
@@ -52,4 +50,18 @@ function render() {
 
     html += '</table>';
     contentDiv.innerHTML = html;
+}
+function handleClick(index) {
+    if (field[index] !== null) return; // Feld schon belegt → nichts machen
+
+    field[index] = currentPlayer;
+
+    // Spieler wechseln
+    if (currentPlayer === 'circle') {
+        currentPlayer = 'cross';
+    } else {
+        currentPlayer = 'circle';
+    }
+
+    render();
 }
