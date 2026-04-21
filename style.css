@@ -1,39 +1,60 @@
-table {
-    border-collapse: collapse;
+/* Cleaned and improved styling for Tic Tac Toy */
+:root{
+    --bg: #383838;
+    --accent: #14b1e0;
+    --accent-2: #ffc800;
+    --cell-size: 100px;
 }
 
+*{box-sizing:border-box}
 
-body {
-    background-color: #383838;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-/* Zellen */
-td {
-    width: 100px;
-    height: 100px;
-    border: 3px solid white;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 0; /* wichtig, damit SVG sauber sitzt */
-    cursor: pointer;
+body{
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background:var(--bg);
+    color:#fff;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-td:hover {
-    background-color: rgba(255,255,255,0.1);
+main{width:360px}
+
+header{margin-bottom:12px;text-align:center}
+
+#controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+#controls #status{font-weight:600}
+#controls #playerSymbol{color:var(--accent)}
+#resetBtn{background:#fff;color:#000;border:none;padding:6px 10px;border-radius:6px;cursor:pointer}
+
+/* Spielfeld */
+#content table{border-collapse:collapse;margin:0 auto}
+
+td{
+    width:var(--cell-size);
+    height:var(--cell-size);
+    border:3px solid rgba(255,255,255,0.9);
+    text-align:center;
+    vertical-align:middle;
+    font-size:0; /* damit SVG skaliert ohne extra whitespace */
+    cursor:pointer;
+    background:rgba(255,255,255,0.02);
 }
-/* Öffnung nach außen (keine Außenlinien) */
-tr:first-child td {
-    border-top: none;
-}
-tr:last-child td {
-    border-bottom: none;
-}
-td:first-child {
-    border-left: none;
-}
-td:last-child {
-    border-right: none;
+
+/* Keine doppelte äußere Linie */
+tr:first-child td{border-top:none}
+tr:last-child td{border-bottom:none}
+td:first-child{border-left:none}
+td:last-child{border-right:none}
+
+/* Hervorhebung bei Gewinn */
+.win{background:linear-gradient(135deg, rgba(20,177,224,0.15), rgba(255,200,0,0.08));}
+
+svg{display:block;margin:0 auto}
+
+/* Responsive */
+@media (max-width:420px){
+    :root{ --cell-size:80px; }
+    main{ width:auto; padding:8px; }
 }
