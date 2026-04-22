@@ -30,9 +30,11 @@ function setupDelegation(){
         const td = e.target.closest('td');
         if(!td || !content.contains(td)) return;
         const index = Number(td.dataset.index);
-        handleCellClick(index);
+        if(Number.isFinite(index)) handleCellClick(index);
     });
 }
+
+
 
 function handleCellClick(index){
     if(gameOver) return;
@@ -44,7 +46,13 @@ function handleCellClick(index){
         gameOver = true;
         highlightWin(winner.combo);
         const status = document.getElementById('status');
-        if(status) status.textContent = `Gewinner: ${winner.player === 'cross' ? 'X' : 'O'}`;
+        const winnerSymbol = winner.player === 'cross' ? 'X' : 'O';
+        // Preserve structure so #playerSymbol exists (makes reset/updateStatus simpler)
+        if(status) {
+            status.innerHTML = `Gewinner: <span id="playerSymbol">${winnerSymbol}</span>`;
+            const symbolEl = document.getElementById('playerSymbol');
+            if(symbolEl) symbolEl.style.color = winner.player === 'cross' ? '#ffc800' : '#14b1e0';
+        }
         return;
     }
     currentPlayer = currentPlayer === 'cross' ? 'circle' : 'cross';
@@ -52,10 +60,12 @@ function handleCellClick(index){
 }
 
 function updateStatus(){
+    const status = document.getElementById('status');
+    if(!status) return;
+    // Ensure the status contains the expected structure
+    status.innerHTML = `Spieler: <span id="playerSymbol">${currentPlayer === 'cross' ? 'X' : 'O'}</span>`;
     const symbolEl = document.getElementById('playerSymbol');
-    if(!symbolEl) return;
-    symbolEl.textContent = currentPlayer === 'cross' ? 'X' : 'O';
-    symbolEl.style.color = currentPlayer === 'cross' ? '#ffc800' : '#14b1e0';
+    if(symbolEl) symbolEl.style.color = currentPlayer === 'cross' ? '#ffc800' : '#14b1e0';
 }
 
 function generateSymbol(value){
@@ -78,16 +88,25 @@ function generateSymbol(value){
 function render(){
     const contentDiv = document.getElementById('content');
     if(!contentDiv) return;
+
     let html = '<table><tbody>';
-    for(let i=0;i<3;i++){
+
+    for(let i = 0; i < 3; i++){
         html += '<tr>';
-        for(let j=0;j<3;j++){
-            const index = i*3 + j;
+
+        for(let j = 0; j < 3; j++){
+            const index = i * 3 + j;
             const value = fields[index];
-            html += `<td data-index="${index}">${generateSymbol(value)}</td>`;
+
+            html += `
+                <td data-index="${index}">
+                    ${generateSymbol(value)}
+                </td>
+            `;
         }
         html += '</tr>';
     }
+
     html += '</tbody></table>';
     contentDiv.innerHTML = html;
 }
